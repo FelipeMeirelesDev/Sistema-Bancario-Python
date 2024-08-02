@@ -37,14 +37,14 @@ def menu():
     [6] Novo Usuário
     [0] sair
     =>""")
-    return input(textwrap.dedent(menu))
+    return input().strip()
 
 def criar_usuario(usuarios):
     cpf = input("Informe o CPF:(Somente Número)")
-    usuaria = filtrar_usuario(cpf, usuarios)
+    usuario = filtrar_usuario(cpf, usuarios)
 
     if usuarios:
-        print("Já existe usúario com esse CPF{}".format(cpf))
+        print("Já existe usuário com esse CPF{}".format(cpf))
         return
 
     nome = input("Informe o nome completo:")
@@ -53,7 +53,7 @@ def criar_usuario(usuarios):
 
     usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereço": endereco})
 
-    print("Usuário criado com secesso!")
+    print("Usuário criado com sucesso!")
 
 def filtrar_usuario(cpf, usuarios):
     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
@@ -64,7 +64,7 @@ def criar_conta(agencia, numero_conta, usuarios):
     usuario = filtrar_usuario(cpf, usuarios)
 
     if usuario:
-        print("Conta criada com secesso!")
+        print("Conta criada com sucesso!")
         return {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
     
     print("Usuário não encontrado, Operação cancelada!")
@@ -72,18 +72,16 @@ def criar_conta(agencia, numero_conta, usuarios):
 def listar_contas(contas):
     for conta in contas:
         linha = f"""
-            Agência:{conta["agencia"]}
-            C/C:{conta["numero_conta"]}
-            Titular:{conta["usuario"]["nome"]}
+            Agência: {conta["agencia"]}
+            C/C: {conta["numero_conta"]}
+            Titular: {conta["usuario"]["nome"]}
         """
         print("=" * 100)
         print(textwrap.dedent(linha))
 
 def main():
+    global saldo, extrato, numero_saques, limite_saques
     AGENCIA = "0001"
-    valor = 0
-    opcao = ""
-    limite = 0
     saldo = 0
     extrato = ""
     numero_saques = 0
@@ -91,36 +89,39 @@ def main():
     contas = []
     limite_saques = 3
 
-    while opcao != 0:
+    opcao = ""
+
+    while opcao != "0":
         
         opcao = menu()
 
-        if opcao == 1:
-            depositar(float(input("Digite o valor a ser deposítado:R$")))
+        if opcao == "1":
+            depositar(float(input("Digite o valor a ser depositado:R$")))
 
-        elif opcao == 2:
+        elif opcao == "2":
             sacar(float(input("Digite o valor a ser sacado:R$")))
 
-        elif opcao == 3:
+        elif opcao == "3":
             print("=====Extrato=====\n")
             print(extrato)
             print("Saldo na Conta R${:.2f}".format(saldo))
 
-        elif opcao == 4:
+        elif opcao == "4":
             criar_usuario(usuarios)
         
-        elif opcao == 5:
+        elif opcao == "5":
             numero_conta = len(contas) + 1
             conta = criar_conta(AGENCIA, numero_conta, usuarios)
 
             if conta:
                 contas.append(conta)
         
-        elif opcao == 6:
+        elif opcao == "6":
             listar_contas(contas)
 
-        elif opcao == 0:
+        elif opcao == "0":
             print("Programa Finalizado.")
+            break
 
         else:
             print("Operação inválida, Selecione novamente a operação desejada.")
