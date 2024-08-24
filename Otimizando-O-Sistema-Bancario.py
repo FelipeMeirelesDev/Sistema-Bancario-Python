@@ -11,6 +11,8 @@ def depositar (valor):
         print("Operação falhou! O valor é inválido")
     return saldo, extrato
 
+print("Teste 123")
+
 def sacar (valor):
     global numero_saques
     global limite_saques
